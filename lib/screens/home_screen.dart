@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../models/habit.dart';
+import '../services/habit_storage.dart';
 
 class HabitHomePage extends StatefulWidget {
   const HabitHomePage({super.key});
@@ -15,6 +16,19 @@ class _HabitHomePageState extends State<HabitHomePage> {
   @override
   void initState() {
     super.initState();
+    _loadHabits();
+  }
+
+  Future<void> _loadHabits() async {
+    final habits = await HabitStorage.loadHabits();
+    setState(() {
+      _habits = habits;
+    });
+  }
+
+  Future<void> _saveAndUpdate(VoidCallback action) async {
+    setState(action);
+    await HabitStorage.saveHabits(_habits);
   }
 
   @override
@@ -139,18 +153,18 @@ class _HabitHomePageState extends State<HabitHomePage> {
 
   void _addHabit(String name) {
     if (name.trim().isEmpty) return;
-
-    setState(() {
-      _habits.add(Habit(name: name.trim()));
-    });
-
+    _saveAndUpdate(() => _habits.add(Habit(name: name.trim())));
     Navigator.pop(context);
   }
 
-  void _deleteHabit(int index, String habitName) {
-    setState(() {
-      _habits.removeAt(index);
+  void _toggleHabit(int index) {
+    _saveAndUpdate(() {
+      _habits[index].isCompleted = !_habits[index].isCompleted;
     });
+  }
+
+  void _deleteHabit(int index, String habitName) {
+    _saveAndUpdate(() => _habits.removeAt(index));
 
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
@@ -161,19 +175,11 @@ class _HabitHomePageState extends State<HabitHomePage> {
           label: 'Desfazer',
           textColor: Colors.white,
           onPressed: () {
-            setState(() {
-              _habits.insert(index, Habit(name: habitName));
-            });
+            _saveAndUpdate(() => _habits.insert(index, Habit(name: habitName)));
           },
         ),
       ),
     );
-  }
-
-  void _toggleHabit(int index) {
-    setState(() {
-      _habits[index].isCompleted = !_habits[index].isCompleted;
-    });
   }
 
   @override
