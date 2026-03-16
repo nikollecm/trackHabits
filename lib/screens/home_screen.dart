@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import '../models/habit.dart';
 import '../services/habit_storage.dart';
 
@@ -41,21 +42,27 @@ class _HabitHomePageState extends State<HabitHomePage> {
     return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Icon(Icons.self_improvement, size: 80, color: Colors.pink[400]),
-          const SizedBox(height: 16),
+          Icon(Icons.self_improvement, size: 90, color: Colors.pink[200]),
+
           Text(
             'Nenhum hábito ainda!',
-            style: TextStyle(
-              fontSize: 20,
+            style: GoogleFonts.poppins(
+              fontSize: 24,
               color: Colors.pink[600],
-              fontWeight: FontWeight.w500,
+              fontWeight: FontWeight.w700,
             ),
           ),
           const SizedBox(height: 8),
-          Text(
-            'Toque no + para adicionar seu primeiro hábito',
-            style: TextStyle(color: Colors.pink[400]),
+          Center(
+            child: Text(
+              'Toque no + para adicionar seu primeiro hábito',
+              style: GoogleFonts.poppins(
+                color: Colors.pink[400],
+                fontWeight: FontWeight.w500,
+              ),
+            ),
           ),
         ],
       ),
@@ -83,7 +90,7 @@ class _HabitHomePageState extends State<HabitHomePage> {
       background: Container(
         margin: const EdgeInsets.only(bottom: 12),
         decoration: BoxDecoration(
-          color: Colors.red[400],
+          color: Colors.pink[400],
           borderRadius: BorderRadius.circular(12),
         ),
         alignment: Alignment.centerRight,
@@ -127,12 +134,20 @@ class _HabitHomePageState extends State<HabitHomePage> {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Novo Hábito'),
+        title: Text(
+          'Novo Hábito',
+          style: GoogleFonts.poppins(fontWeight: FontWeight.bold),
+        ),
         content: TextField(
           controller: _controller,
           autofocus: true,
-          decoration: const InputDecoration(
+          decoration: InputDecoration(
             hintText: 'Ex: Beber 2L de água',
+            hintStyle: GoogleFonts.poppins(
+              fontSize: 14,
+              color: Colors.grey,
+              fontStyle: FontStyle.italic,
+            ),
             border: OutlineInputBorder(),
           ),
           onSubmitted: (_) => _addHabit(_controller.text),
@@ -140,11 +155,21 @@ class _HabitHomePageState extends State<HabitHomePage> {
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: const Text('Cancelar'),
+            child: Text(
+              'Cancelar',
+              style: GoogleFonts.poppins(fontWeight: FontWeight.w600),
+            ),
           ),
           ElevatedButton(
             onPressed: () => _addHabit(_controller.text),
-            child: const Text('Adicionar'),
+            style: ElevatedButton.styleFrom(backgroundColor: Colors.pink[300]),
+            child: Text(
+              'Adicionar',
+              style: GoogleFonts.poppins(
+                fontWeight: FontWeight.w700,
+                color: Colors.white,
+              ),
+            ),
           ),
         ],
       ),
@@ -169,7 +194,7 @@ class _HabitHomePageState extends State<HabitHomePage> {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text('"$habitName" removido'),
-        backgroundColor: Colors.red[400],
+        backgroundColor: Colors.pink[400],
         duration: const Duration(seconds: 3),
         action: SnackBarAction(
           label: 'Desfazer',
@@ -191,13 +216,14 @@ class _HabitHomePageState extends State<HabitHomePage> {
         backgroundColor: Colors.pink.shade200,
         title: Row(
           mainAxisAlignment: MainAxisAlignment.center,
+
           children: [
             Text(
-              '${_habits.where((h) => h.isCompleted).length}/${_habits.length}',
-              style: const TextStyle(
+              'Habit Tracker',
+              style: GoogleFonts.poppins(
                 color: Colors.white,
+                fontSize: 30,
                 fontWeight: FontWeight.bold,
-                fontSize: 24,
               ),
             ),
           ],
