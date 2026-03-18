@@ -213,13 +213,13 @@ class _HabitHomePageState extends State<HabitHomePage> {
       backgroundColor: Colors.pink.shade50,
 
       appBar: AppBar(
-        backgroundColor: Colors.pink.shade200,
+        backgroundColor: Colors.pink.shade50,
         title: Row(
           mainAxisAlignment: MainAxisAlignment.center,
 
           children: [
             Text(
-              'Habit Tracker',
+              '',
               style: GoogleFonts.poppins(
                 color: Colors.white,
                 fontSize: 30,
